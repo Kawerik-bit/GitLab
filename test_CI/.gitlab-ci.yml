@@ -12,9 +12,12 @@ create_file:
   artifacts:
     paths:
       - build/
-      
+    expire_in: 1h  
+
 test_file:
   stage: test
   image: alpine
+  dependencies:
+    - create_file  
   script:
-    - test -f build/testfile.txt
+    - if [ -f build/testfile.txt ]; then echo "Test passed!"; else echo "Test failed!"; exit 1; fi
